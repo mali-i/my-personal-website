@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+
+nav{
+  display: inline-block;
+  width:200px;
+  border: 1px solid black;
+  height: 80vh;;
+}
+main{
+  display: inline-block;
+}
