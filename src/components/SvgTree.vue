@@ -21,12 +21,12 @@ const saveSvg = () => {
         nodes: JSON.parse(JSON.stringify(nodes.value)),
         connections: JSON.parse(JSON.stringify(cconnections.value))
     };
-    console.log('SVG data saved in real-time');
+    // console.log('SVG data saved in real-time');
 };
 
 // 监听store.selectedDate的变化
 watch(() => store.selectedDate, (newDate, oldDate) => {
-    console.log(`selectedDate changed from ${oldDate} to ${newDate}`);
+    // console.log(`selectedDate changed from ${oldDate} to ${newDate}`);
     document.getElementById("svg-tree").innerHTML = '';
     nodes.value = store.svgs[newDate]?.nodes || [];
     cconnections.value = store.svgs[newDate]?.connections || [];

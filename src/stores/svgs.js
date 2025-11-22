@@ -17,17 +17,17 @@ export const useSvgsStore = defineStore('svgs',() => {
             isLoaded.value = true // 数据加载完成
         })
         .catch(error => {
-            console.error('Failed to load data.json:', error)
+            // console.error('Failed to load data.json:', error)
             isLoaded.value = true // 即使失败也标记为已加载
         })
 
     const saveSvgs = (newVal)=>{
-        console.log('save svgs to localStorage')
+        // console.log('save svgs to localStorage')
         window.localStorage.setItem('svgs',JSON.stringify(newVal))
     }
 
     watch(svgs,(newVal) => {
-        console.log('svgs changed')
+        // console.log('svgs changed')
         window.localStorage.setItem('svgs',JSON.stringify(newVal))
     },{deep:true})
 

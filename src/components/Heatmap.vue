@@ -92,7 +92,7 @@ const draw_svg = async ()=>{
 }
 
 const handleClick = (e,v)=>{
-    console.log('点击了日期方块', v.date)
+    // console.log('点击了日期方块', v.date)
     store.selectedDate = v.date // 把当前选中的日期存到store中
 }
 
