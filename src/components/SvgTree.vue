@@ -55,14 +55,14 @@ onMounted(() => {
         updateConnections();
     }
 
-    document.getElementById("svg-tree").addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-        const svgRect = document.getElementById("svg-tree").getBoundingClientRect();
-        const x = e.clientX - svgRect.left;
-        const y = e.clientY - svgRect.top;
-        addNode(null, "", x, y);
-        updateConnections();
-    });
+    // document.getElementById("svg-tree").addEventListener("contextmenu", (e) => {
+    //     e.preventDefault();
+    //     const svgRect = document.getElementById("svg-tree").getBoundingClientRect();
+    //     const x = e.clientX - svgRect.left;
+    //     const y = e.clientY - svgRect.top;
+    //     addNode(null, "", x, y);
+    //     updateConnections();
+    // });
 });
 
 // 切换日期后，将存储的svg节点重新绘制
@@ -106,11 +106,11 @@ const updateNodes = () => {
             document.addEventListener("mouseup", onMouseUp);
         });
 
-        circle.addEventListener("contextmenu", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            showMenu(e, node);
-        });
+        // circle.addEventListener("contextmenu", (e) => {
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     showMenu(e, node);
+        // });
 
         let foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
         foreignObject.setAttribute("x", 20);
@@ -163,27 +163,27 @@ const updateNodes = () => {
     });
 };
 
-const addNode = (parentNode = null, text = "", x = null, y = null) => {
-    parentNode = nodes.value.find(n => n.id === (parentNode ? parentNode.id : null)) || null;
-    let newNode = {
-        id: Date.now(),
-        x: x !== null ? x : (parentNode ? parentNode.x : 50),
-        y: y !== null ? y : (parentNode ? parentNode.y + 50 : 50),
-        text: text,
-        done: false,
-        parentNode: parentNode ? parentNode.id : null
-    };
-    nodes.value.push(newNode);
+// const addNode = (parentNode = null, text = "", x = null, y = null) => {
+//     parentNode = nodes.value.find(n => n.id === (parentNode ? parentNode.id : null)) || null;
+//     let newNode = {
+//         id: Date.now(),
+//         x: x !== null ? x : (parentNode ? parentNode.x : 50),
+//         y: y !== null ? y : (parentNode ? parentNode.y + 50 : 50),
+//         text: text,
+//         done: false,
+//         parentNode: parentNode ? parentNode.id : null
+//     };
+//     nodes.value.push(newNode);
 
-    if (newNode.parentNode) {
-        cconnections.value.push({ from: newNode.parentNode, to: newNode.id });
-    }
+//     if (newNode.parentNode) {
+//         cconnections.value.push({ from: newNode.parentNode, to: newNode.id });
+//     }
 
-    updateNodes();
-    updateConnections();
-    saveSvg(); // 实时保存
-    return newNode;
-};
+//     updateNodes();
+//     updateConnections();
+//     saveSvg(); // 实时保存
+//     return newNode;
+// };
 
 const updateConnections = () => {
     let svg = document.getElementById("svg-tree");
@@ -205,56 +205,56 @@ const updateConnections = () => {
     saveSvg(); // 实时保存
 };
 
-const showMenu = (e, node) => {
-    console.log('showMenu执行')
-    menuNode = node; // 设置当前右键菜单操作的节点
-    menuStyle.value = {
-        position: 'fixed !important',
-        left: e.clientX + 'px',
-        top: e.clientY + 'px',
-        background: '#fff',
-        border: '1px solid #ccc',
-        zIndex: 1000 // 确保菜单在最上层
-    };
-    menuVisible.value = true;
-}
+// const showMenu = (e, node) => {
+//     console.log('showMenu执行')
+//     menuNode = node; // 设置当前右键菜单操作的节点
+//     menuStyle.value = {
+//         position: 'fixed !important',
+//         left: e.clientX + 'px',
+//         top: e.clientY + 'px',
+//         background: '#fff',
+//         border: '1px solid #ccc',
+//         zIndex: 1000 // 确保菜单在最上层
+//     };
+//     menuVisible.value = true;
+// }
 
-const menu_addNode = () => {
-    if (menuNode) {
-        addNode(menuNode, '', menuNode.x, menuNode.y + 50);
-        updateNodes();
-        updateConnections();
-        menuVisible.value = false;
-        hideMenu();
-    }
-}
+// const menu_addNode = () => {
+//     if (menuNode) {
+//         addNode(menuNode, '', menuNode.x, menuNode.y + 50);
+//         updateNodes();
+//         updateConnections();
+//         menuVisible.value = false;
+//         hideMenu();
+//     }
+// }
 
-const hideMenu = () => {
-    menuVisible.value = false;
-    menuNode = null;
-}
+// const hideMenu = () => {
+//     menuVisible.value = false;
+//     menuNode = null;
+// }
 
-const deleteNode = () => {
-    if (!menuNode) return;
-    const new_parentId = menuNode.parentNode;
-    const children = nodes.value.filter(n => n.parentNode === menuNode.id);
-    children.forEach(child => {
-        child.parentNode = new_parentId;
-        let conn = cconnections.value.find(c => c.from === menuNode.id && c.to === child.id);
-        if (!new_parentId) {
-            console.log('当前删除的是根节点及其连接线')
-            if (conn) cconnections.value = cconnections.value.filter(c => c !== conn);
-            return;
-        }
-        console.log('要修正的连接线', conn)
-        if (conn) conn.from = new_parentId;
-    });
-    nodes.value = nodes.value.filter(n => n.id !== menuNode.id);
-    cconnections.value = cconnections.value.filter(c => c.from !== menuNode.id && c.to !== menuNode.id);
-    updateNodes();
-    updateConnections();
-    hideMenu();
-}
+// const deleteNode = () => {
+//     if (!menuNode) return;
+//     const new_parentId = menuNode.parentNode;
+//     const children = nodes.value.filter(n => n.parentNode === menuNode.id);
+//     children.forEach(child => {
+//         child.parentNode = new_parentId;
+//         let conn = cconnections.value.find(c => c.from === menuNode.id && c.to === child.id);
+//         if (!new_parentId) {
+//             console.log('当前删除的是根节点及其连接线')
+//             if (conn) cconnections.value = cconnections.value.filter(c => c !== conn);
+//             return;
+//         }
+//         console.log('要修正的连接线', conn)
+//         if (conn) conn.from = new_parentId;
+//     });
+//     nodes.value = nodes.value.filter(n => n.id !== menuNode.id);
+//     cconnections.value = cconnections.value.filter(c => c.from !== menuNode.id && c.to !== menuNode.id);
+//     updateNodes();
+//     updateConnections();
+//     hideMenu();
+// }
 </script>
 
 <template>
@@ -267,7 +267,7 @@ const deleteNode = () => {
  </div>
 
  <!-- 右键菜单 -->
- <div v-if="menuVisible" :style="menuStyle" class="context-menu">
+ <!-- <div v-if="menuVisible" :style="menuStyle" class="context-menu">
   <div @click="menu_addNode" class="menu-item">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <circle cx="12" cy="12" r="10"></circle>
@@ -283,7 +283,7 @@ const deleteNode = () => {
     </svg>
     删除当前节点
   </div>
-</div>
+</div> -->
 </template>
 
 <style scoped>
