@@ -11,7 +11,6 @@ import HeatMap from './components/Heatmap.vue'
       <router-link to="/writing" class="sidebar-link">Writing</router-link>
 
       <HeatMap />
-
     </nav>
     <main class="main-content">
       <router-view></router-view>
@@ -28,6 +27,10 @@ import HeatMap from './components/Heatmap.vue'
 }
 
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
   width: 220px;
   background: #fff;
   border-right: 1px solid #d0d7de;
@@ -36,6 +39,7 @@ import HeatMap from './components/Heatmap.vue'
   flex-direction: column;
   align-items: center;
   box-shadow: 1px 0 4px rgba(27,31,35,.04);
+  z-index: 1000;
 }
 
 .sidebar-title {
@@ -65,10 +69,11 @@ import HeatMap from './components/Heatmap.vue'
 
 .main-content {
   flex: 1;
+  margin-left: 220px;
   /* max-width: 800px; */
   /* margin: 0px auto; */
   background: #fff;
-  border: 1px solid #d0d7de;
+  /* border: 1px solid #d0d7de; */
   border-radius: 0px;
   box-shadow: 0 1px 3px rgba(27,31,35,.04);
   padding: 32px;

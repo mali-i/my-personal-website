@@ -1,5 +1,19 @@
 /* @import "tailwindcss"; */
 
+/* 隐藏浏览器右侧的滚动条 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* 对于Firefox浏览器 */
+html {
+  scrollbar-width: none;
+}
+
+/* 对于IE和Edge */
+body {
+  -ms-overflow-style: none;
+}
 
 /* nav{
   display: inline-block;
