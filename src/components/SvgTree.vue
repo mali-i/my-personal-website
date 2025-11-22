@@ -245,7 +245,6 @@ const deleteNode = () => {
 
 <template>
  <div class="main-content">
-  <div class="roadmap-title">My {{ selectedDate }} 's Mindset Chain</div>
   <div class="svg-tree-container">
      <div class="svg-wrapper">
        <svg id="svg-tree"></svg>
@@ -279,15 +278,6 @@ const deleteNode = () => {
     height:100%;
     display: flex;
     flex-direction: column;
-}
-.roadmap-title {
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: center;
-  margin: 1rem 0;
-  margin-top:0;
-  color: #34495e;
-  border-radius: 8px;
 }
 
 .svg-tree-container {
