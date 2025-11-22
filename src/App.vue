@@ -8,6 +8,7 @@
       <router-link to="/" class="sidebar-link">Home</router-link>
       <router-link to="/mindset-chain" class="sidebar-link">Mindset Chain</router-link>
       <router-link to="/writing" class="sidebar-link">Writing</router-link>
+      <router-link to="/products" class="sidebar-link">Products</router-link>
     </nav>
     <main class="main-content">
       <router-view></router-view>

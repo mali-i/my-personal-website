@@ -6,7 +6,8 @@ import MindsetChainView from '../views/MindsetChainView.vue'
 const routes = [
     {path:'/', component: HomeView},
     {path:'/writing', component: WritingView},
-    {path:'/mindset-chain', component: MindsetChainView}
+    {path:'/mindset-chain', component: MindsetChainView},
+    {path:'/products', component: () => import('../views/ProductsView.vue')}
 ]
 // 创建路由实例，并传递 `routes` 配置
 const router = createRouter({
