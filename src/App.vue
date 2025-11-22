@@ -1,4 +1,5 @@
 <script setup>
+import HeatMap from './components/Heatmap.vue'
 </script>
 
 <template>
@@ -6,7 +7,11 @@
     <nav class="sidebar">
       <h2 class="sidebar-title">algernon's</h2>
       <router-link to="/" class="sidebar-link">Home</router-link>
+      <router-link to="/mindset-chain" class="sidebar-link">Mindset Chain</router-link>
       <router-link to="/writing" class="sidebar-link">Writing</router-link>
+
+      <HeatMap />
+
     </nav>
     <main class="main-content">
       <router-view></router-view>

@@ -1,14 +1,13 @@
 <script setup>
 import * as d3 from 'd3'
 import { ref, onMounted,nextTick, watchEffect, watch } from 'vue';
-import { useSvgsStore } from '../stores/svgs.js';
+import jsonData from '../../data.json'
 
 const pixel_width = ref(13)
 const svg_left_or_right_margin = ref(10)
 const pixel_margin = ref(5) // rect与右边的rect之间的间隔
 var rect_count_x = ref(0)
-const store = useSvgsStore() // 在组件内部的任何地方都可以访问变量store了
-
+const promptStats = jsonData.promptStats
 
 const observer = new ResizeObserver(entries =>{
     for(let entry of entries){
@@ -47,12 +46,12 @@ const draw_svg = async ()=>{
         const date = new Date()
         date.setDate(today.getDate() - i)
         const date_str = date.toISOString().split('T')[0] // 只取日期部分
-        // 查找 store.svgs 中是否有这个日期的键
-        let nodes_num = 0
-        if(store.svgs[date_str]){
-            nodes_num = store.svgs[date_str].nodes.length
+        // 查找 promptStats 中是否有这个日期的键
+        let prompts_num = 0
+        if(promptStats[date_str]){
+            prompts_num = promptStats[date_str].num
         } 
-        date_list.unshift({"date": date_str, "nodes_num": nodes_num || 0 }) // 新日期插入到数组前面
+        date_list.unshift({"date": date_str, "prompts_num": prompts_num || 0}) // 新日期插入到数组前面
     }
     // console.log(date_list)
 
@@ -71,35 +70,24 @@ const draw_svg = async ()=>{
         return svg_left_or_right_margin.value + (pixel_width.value + pixel_margin.value) * (row)    
       })
       .attr('fill', v => {
-        if (v.nodes_num == 0) {
+        if (v.prompts_num == 0) {
             return '#EFEFEF'  // 表示无数据
         }
 
-        if (v.nodes_num > 14) {
+        if (v.prompts_num > 14) {
             return '#2C82C9'  // 深蓝色，表示多条数据
         }
-        if(v.nodes_num >9){
+        if(v.prompts_num >9){
             return '#4A90E2'
         }
-        if(v.nodes_num >4){
+        if(v.prompts_num >4){
             return '#7CB9E8'
         }
         return '#A7C7E7'  // 浅蓝色，表示一条数据
         })
-     .on('click', (e,v)=>handleClick(e,v))
      .append('title') // 添加悬浮提示
-      .text(d => `${d.date}: ${d.nodes_num} nodes`)
+      .text(d => `${d.date}: ${d.prompts_num} prompts`)
 }
-
-const handleClick = (e,v)=>{
-    console.log('点击了日期方块', v.date)
-    store.selectedDate = v.date // 把当前选中的日期存到store中
-}
-
-watch(store.svgs,()=>{
-     d3.select('#svg_container').selectAll('rect').remove();
-    draw_svg();
-}, {deep:true}) // 深度监听store.svgs的变化
 
 
 </script>
@@ -110,7 +98,7 @@ watch(store.svgs,()=>{
     </div> 
 </template>
 
-<style scoped>
+<style>
 svg{
     width:100%;
     margin:10px;
