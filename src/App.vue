@@ -58,6 +58,7 @@ import HeatMap from './components/Heatmap.vue'
   font-weight: 500;
   margin-bottom: 16px;
   width: 100%;
+  box-sizing: border-box;
   text-align: center;
   transition: background 0.2s, color 0.2s;
 }
