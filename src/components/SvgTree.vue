@@ -34,12 +34,26 @@ watch(() => store.selectedDate, (newDate, oldDate) => {
     updateConnections();
 });
 
+// 监听数据加载完成
+watch(() => store.isLoaded, (loaded) => {
+    if (loaded) {
+        const today = new Date().toISOString().split('T')[0];
+        nodes.value = store.svgs[today]?.nodes || [];
+        cconnections.value = store.svgs[today]?.connections || [];
+        updateNodes();
+        updateConnections();
+    }
+});
+
 onMounted(() => {
-    const today = new Date().toISOString().split('T')[0];
-    nodes.value = store.svgs[today]?.nodes || [];
-    cconnections.value = store.svgs[today]?.connections || [];
-    updateNodes();
-    updateConnections();
+    // 如果数据已经加载完成，立即初始化
+    if (store.isLoaded) {
+        const today = new Date().toISOString().split('T')[0];
+        nodes.value = store.svgs[today]?.nodes || [];
+        cconnections.value = store.svgs[today]?.connections || [];
+        updateNodes();
+        updateConnections();
+    }
 
     document.getElementById("svg-tree").addEventListener("contextmenu", (e) => {
         e.preventDefault();
