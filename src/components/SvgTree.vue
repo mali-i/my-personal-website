@@ -275,6 +275,7 @@ const deleteNode = () => {
 <style scoped>
 
 .main-content{
+    /* background-color: #e74c3c; */
     height:100%;
     display: flex;
     flex-direction: column;

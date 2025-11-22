@@ -68,14 +68,12 @@
 .main-content {
   flex: 1;
   margin-left: 220px;
-  /* max-width: 800px; */
-  /* margin: 0px auto; */
   background: #fff;
-  /* border: 1px solid #d0d7de; */
   border-radius: 0px;
   box-shadow: 0 1px 3px rgba(27,31,35,.04);
   padding: 32px;
   min-height: 300px;
+  box-sizing: border-box;
 }
 
 .title {
@@ -84,5 +82,18 @@
   font-weight: 600;
   text-align: left;
   margin-bottom: 32px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 16px;
+  }
+  
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
 }
 </style>
