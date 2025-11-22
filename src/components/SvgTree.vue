@@ -110,17 +110,31 @@ const updateNodes = () => {
         input.style.height = "24px";
         input.style.fontSize = "14px";
         input.style.border = "1px solid #ccc";
+        input.style.borderTop = "1px solid #ccc";
+        input.style.borderRight = "1px solid #ccc";
+        input.style.borderBottom = "1px solid #ccc";
+        input.style.borderLeft = "1px solid #ccc";
         input.style.borderRadius = "4px";
         input.style.padding = "4px 8px";
+        input.style.boxSizing = "border-box";
         input.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
         input.style.outline = "none";
         input.style.transition = "border-color 0.2s, box-shadow 0.2s";
+        input.style.background = "white";
         input.addEventListener("focus", () => {
             input.style.borderColor = "#667eea";
+            input.style.borderTop = "1px solid #667eea";
+            input.style.borderRight = "1px solid #667eea";
+            input.style.borderBottom = "1px solid #667eea";
+            input.style.borderLeft = "1px solid #667eea";
             input.style.boxShadow = "0 2px 6px rgba(102, 126, 234, 0.3)";
         });
         input.addEventListener("blur", () => {
             input.style.borderColor = "#ccc";
+            input.style.borderTop = "1px solid #ccc";
+            input.style.borderRight = "1px solid #ccc";
+            input.style.borderBottom = "1px solid #ccc";
+            input.style.borderLeft = "1px solid #ccc";
             input.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
         });
         input.addEventListener("input", (e) => {
