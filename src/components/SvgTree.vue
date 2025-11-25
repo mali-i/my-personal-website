@@ -138,7 +138,7 @@ const updateNodes = () => {
         input.setAttribute("type", "text");
         input.value = node.text;
         input.style.width = "180px";
-        input.style.height = "24px";
+        input.style.height = "20px";
         input.style.fontSize = "14px";
         input.style.border = "1px solid #ccc";
         input.style.borderRadius = "4px";
