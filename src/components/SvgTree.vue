@@ -47,43 +47,45 @@ watch(() => store.selectedDate, (newDate, oldDate) => {
 });
 
 onMounted(() => {
-    const today = new Date().toISOString().split('T')[0];
-    nodes.value = store.svgs[today]?.nodes || [];
-    cconnections.value = store.svgs[today]?.connections || [];
-    updateNodes();
-    updateConnections();
-
-    const svg = document.getElementById("svg-tree");
-
-    // svg.addEventListener("contextmenu", (e) => {
-    //     e.preventDefault();
-    //     // 只有在没有进行框选时才添加节点
-    //     if (!isSelecting && !isDraggingSelection) {
-    //         const svgRect = svg.getBoundingClientRect();
-    //         const x = e.clientX - svgRect.left;
-    //         const y = e.clientY - svgRect.top;
-    //         addNode(null, "", x, y);
-    //         updateConnections();
-    //     }
-    // });
-
-    // 添加框选功能事件监听
-    svg.addEventListener("mousedown", handleSelectionStart, { passive: false });
-    document.addEventListener("mousemove", handleSelectionMove, { passive: false });
-    document.addEventListener("mouseup", handleSelectionEnd, { passive: false });
-    
-    
-    // 点击空白区域清除选择
-    svg.addEventListener("click", (e) => {
-        if (e.target === svg && !isSelecting && !isDraggingSelection && !justFinishedSelecting) {
-            clearSelection();
+    // 使用 nextTick 确保 DOM 完全渲染后再执行
+    const initializeComponent = () => {
+        const svg = document.getElementById("svg-tree");
+        if (!svg) {
+            // 如果 SVG 元素还没有准备好，再次尝试
+            setTimeout(initializeComponent, 50);
+            return;
         }
-    });
+
+        const today = new Date().toISOString().split('T')[0];
+        nodes.value = store.svgs[today]?.nodes || [];
+        cconnections.value = store.svgs[today]?.connections || [];
+        
+        // 确保先更新节点和连接，再添加事件监听器
+        updateNodes();
+        updateConnections();
+
+        // 添加框选功能事件监听
+        svg.addEventListener("mousedown", handleSelectionStart, { passive: false });
+        document.addEventListener("mousemove", handleSelectionMove, { passive: false });
+        document.addEventListener("mouseup", handleSelectionEnd, { passive: false });
+        
+        // 点击空白区域清除选择
+        svg.addEventListener("click", (e) => {
+            if (e.target === svg && !isSelecting && !isDraggingSelection && !justFinishedSelecting) {
+                clearSelection();
+            }
+        });
+    };
+
+    // 延迟初始化确保 DOM 完全准备好
+    setTimeout(initializeComponent, 100);
 });
 
 // 切换日期后，将存储的svg节点重新绘制
 const updateNodes = () => {
     const svg = document.getElementById("svg-tree");
+    if (!svg) return; // 确保 SVG 元素存在
+    
     Array.from(svg.querySelectorAll("g.node-group")).forEach(g => svg.removeChild(g));
 
     nodes.value.forEach(node => {
@@ -102,9 +104,23 @@ const updateNodes = () => {
         circle.addEventListener("mousedown", (e) => {
             e.preventDefault();
             e.stopPropagation(); // 阻止事件冒泡到SVG
+            
             let startX = e.clientX;
             let startY = e.clientY;
+            let isDragging = false;
+            
             let onMouseMove = (e) => {
+                if (!isDragging) {
+                    // 只有当鼠标移动超过一定距离时才开始拖拽
+                    const dx = Math.abs(e.clientX - startX);
+                    const dy = Math.abs(e.clientY - startY);
+                    if (dx > 3 || dy > 3) {
+                        isDragging = true;
+                    } else {
+                        return;
+                    }
+                }
+                
                 let dx = e.clientX - startX;
                 let dy = e.clientY - startY;
                 node.x += dx;
@@ -115,10 +131,12 @@ const updateNodes = () => {
                 updateConnections();
                 saveSvg(); // 实时保存
             };
+            
             let onMouseUp = () => {
                 document.removeEventListener("mousemove", onMouseMove);
                 document.removeEventListener("mouseup", onMouseUp);
             };
+            
             document.addEventListener("mousemove", onMouseMove);
             document.addEventListener("mouseup", onMouseUp);
         });
@@ -190,6 +208,8 @@ const updateNodes = () => {
 
 const updateConnections = () => {
     let svg = document.getElementById("svg-tree");
+    if (!svg) return; // 确保 SVG 元素存在
+    
     Array.from(svg.querySelectorAll("line")).forEach(line => svg.removeChild(line));
 
     cconnections.value.forEach(conn => {
