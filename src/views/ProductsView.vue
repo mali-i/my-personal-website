@@ -14,7 +14,7 @@
           <span class="tag">D3.js</span>
           <span class="tag">可视化</span>
         </div>
-        <a href="/mindset-chain" class="product-link">查看详情 →</a>
+        <a href="http://www.priming.cn/" class="product-link" target="_blank">查看详情 →</a>
       </div>
 
     <div class="product-card">
@@ -39,7 +39,7 @@
 
 <style scoped>
 .products-container {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 0;
 }
