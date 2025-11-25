@@ -14,6 +14,16 @@ const menuStyle = ref({});
 const menuVisible = ref(false);
 let menuNode = null; // 右键菜单当前操作的节点
 
+// 框选功能相关变量
+const selectionBox = ref(null);
+const selectedNodes = ref([]);
+let isSelecting = false;
+let selectionStart = { x: 0, y: 0 };
+let isDraggingSelection = false;
+let dragStart = { x: 0, y: 0 };
+let currentSelectionBox = null; // 当前保留的选择框
+let justFinishedSelecting = false; // 标记是否刚完成框选
+
 // 实时保存函数
 const saveSvg = () => {
     const date = selectedDate.value;
@@ -28,41 +38,47 @@ const saveSvg = () => {
 watch(() => store.selectedDate, (newDate, oldDate) => {
     // console.log(`selectedDate changed from ${oldDate} to ${newDate}`);
     document.getElementById("svg-tree").innerHTML = '';
+    selectedNodes.value = []; // 清除选择状态
+    currentSelectionBox = null; // 清除选择框引用
     nodes.value = store.svgs[newDate]?.nodes || [];
     cconnections.value = store.svgs[newDate]?.connections || [];
     updateNodes();
     updateConnections();
 });
 
-// 监听数据加载完成
-watch(() => store.isLoaded, (loaded) => {
-    if (loaded) {
-        const today = new Date().toISOString().split('T')[0];
-        nodes.value = store.svgs[today]?.nodes || [];
-        cconnections.value = store.svgs[today]?.connections || [];
-        updateNodes();
-        updateConnections();
-    }
-});
-
 onMounted(() => {
-    // 如果数据已经加载完成，立即初始化
-    if (store.isLoaded) {
-        const today = new Date().toISOString().split('T')[0];
-        nodes.value = store.svgs[today]?.nodes || [];
-        cconnections.value = store.svgs[today]?.connections || [];
-        updateNodes();
-        updateConnections();
-    }
+    const today = new Date().toISOString().split('T')[0];
+    nodes.value = store.svgs[today]?.nodes || [];
+    cconnections.value = store.svgs[today]?.connections || [];
+    updateNodes();
+    updateConnections();
 
-    // document.getElementById("svg-tree").addEventListener("contextmenu", (e) => {
+    const svg = document.getElementById("svg-tree");
+
+    // svg.addEventListener("contextmenu", (e) => {
     //     e.preventDefault();
-    //     const svgRect = document.getElementById("svg-tree").getBoundingClientRect();
-    //     const x = e.clientX - svgRect.left;
-    //     const y = e.clientY - svgRect.top;
-    //     addNode(null, "", x, y);
-    //     updateConnections();
+    //     // 只有在没有进行框选时才添加节点
+    //     if (!isSelecting && !isDraggingSelection) {
+    //         const svgRect = svg.getBoundingClientRect();
+    //         const x = e.clientX - svgRect.left;
+    //         const y = e.clientY - svgRect.top;
+    //         addNode(null, "", x, y);
+    //         updateConnections();
+    //     }
     // });
+
+    // 添加框选功能事件监听
+    svg.addEventListener("mousedown", handleSelectionStart, { passive: false });
+    document.addEventListener("mousemove", handleSelectionMove, { passive: false });
+    document.addEventListener("mouseup", handleSelectionEnd, { passive: false });
+    
+    
+    // 点击空白区域清除选择
+    svg.addEventListener("click", (e) => {
+        if (e.target === svg && !isSelecting && !isDraggingSelection && !justFinishedSelecting) {
+            clearSelection();
+        }
+    });
 });
 
 // 切换日期后，将存储的svg节点重新绘制
@@ -85,6 +101,7 @@ const updateNodes = () => {
 
         circle.addEventListener("mousedown", (e) => {
             e.preventDefault();
+            e.stopPropagation(); // 阻止事件冒泡到SVG
             let startX = e.clientX;
             let startY = e.clientY;
             let onMouseMove = (e) => {
@@ -124,31 +141,17 @@ const updateNodes = () => {
         input.style.height = "24px";
         input.style.fontSize = "14px";
         input.style.border = "1px solid #ccc";
-        input.style.borderTop = "1px solid #ccc";
-        input.style.borderRight = "1px solid #ccc";
-        input.style.borderBottom = "1px solid #ccc";
-        input.style.borderLeft = "1px solid #ccc";
         input.style.borderRadius = "4px";
         input.style.padding = "4px 8px";
-        input.style.boxSizing = "border-box";
         input.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
         input.style.outline = "none";
         input.style.transition = "border-color 0.2s, box-shadow 0.2s";
-        input.style.background = "white";
         input.addEventListener("focus", () => {
             input.style.borderColor = "#667eea";
-            input.style.borderTop = "1px solid #667eea";
-            input.style.borderRight = "1px solid #667eea";
-            input.style.borderBottom = "1px solid #667eea";
-            input.style.borderLeft = "1px solid #667eea";
             input.style.boxShadow = "0 2px 6px rgba(102, 126, 234, 0.3)";
         });
         input.addEventListener("blur", () => {
             input.style.borderColor = "#ccc";
-            input.style.borderTop = "1px solid #ccc";
-            input.style.borderRight = "1px solid #ccc";
-            input.style.borderBottom = "1px solid #ccc";
-            input.style.borderLeft = "1px solid #ccc";
             input.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
         });
         input.addEventListener("input", (e) => {
@@ -205,19 +208,19 @@ const updateConnections = () => {
     saveSvg(); // 实时保存
 };
 
-// const showMenu = (e, node) => {
-//     console.log('showMenu执行')
-//     menuNode = node; // 设置当前右键菜单操作的节点
-//     menuStyle.value = {
-//         position: 'fixed !important',
-//         left: e.clientX + 'px',
-//         top: e.clientY + 'px',
-//         background: '#fff',
-//         border: '1px solid #ccc',
-//         zIndex: 1000 // 确保菜单在最上层
-//     };
-//     menuVisible.value = true;
-// }
+const showMenu = (e, node) => {
+    // console.log('showMenu执行')
+    menuNode = node; // 设置当前右键菜单操作的节点
+    menuStyle.value = {
+        position: 'fixed !important',
+        left: e.clientX + 'px',
+        top: e.clientY + 'px',
+        background: '#fff',
+        border: '1px solid #ccc',
+        zIndex: 1000 // 确保菜单在最上层
+    };
+    menuVisible.value = true;
+}
 
 // const menu_addNode = () => {
 //     if (menuNode) {
@@ -229,10 +232,218 @@ const updateConnections = () => {
 //     }
 // }
 
-// const hideMenu = () => {
-//     menuVisible.value = false;
-//     menuNode = null;
-// }
+const hideMenu = () => {
+    menuVisible.value = false;
+    menuNode = null;
+}
+
+// 框选功能方法
+const handleSelectionStart = (e) => {
+    // 只处理左键点击
+    if (e.button !== 0) return;
+    
+    // 如果点击的是节点，让节点处理拖拽
+    if (e.target.tagName === 'circle' || e.target.tagName === 'input' || e.target.closest('.node-group')) {
+        return;
+    }
+    
+    const svg = document.getElementById("svg-tree");
+    if (!svg) return;
+    
+    const svgRect = svg.getBoundingClientRect();
+    const x = e.clientX - svgRect.left;
+    const y = e.clientY - svgRect.top;
+    
+    // 检查是否点击在现有的选择框内（开始拖拽选择框）
+    if (currentSelectionBox && selectedNodes.value.length > 0) {
+        const boxX = parseFloat(currentSelectionBox.getAttribute('x'));
+        const boxY = parseFloat(currentSelectionBox.getAttribute('y'));
+        const boxWidth = parseFloat(currentSelectionBox.getAttribute('width'));
+        const boxHeight = parseFloat(currentSelectionBox.getAttribute('height'));
+        
+        if (x >= boxX && x <= boxX + boxWidth && y >= boxY && y <= boxY + boxHeight) {
+            isDraggingSelection = true;
+            dragStart = { x: e.clientX, y: e.clientY };
+            return;
+        }
+    }
+    
+    // 开始新的框选
+    isSelecting = true;
+    selectionStart = { x, y };
+    selectedNodes.value = [];
+    justFinishedSelecting = false; // 重置标记
+    // 清除之前的选择框
+    removeSelectionBox();
+    createSelectionBox(x, y, 0, 0);
+};
+
+const handleSelectionMove = (e) => {
+    if (isDraggingSelection) {
+        // 拖拽选择框和其中的元素
+        const dx = e.clientX - dragStart.x;
+        const dy = e.clientY - dragStart.y;
+        
+        // 移动选择框
+        if (currentSelectionBox) {
+            const currentX = parseFloat(currentSelectionBox.getAttribute('x'));
+            const currentY = parseFloat(currentSelectionBox.getAttribute('y'));
+            currentSelectionBox.setAttribute('x', currentX + dx);
+            currentSelectionBox.setAttribute('y', currentY + dy);
+        }
+        
+        // 移动选中的节点
+        selectedNodes.value.forEach(nodeId => {
+            const node = nodes.value.find(n => n.id === nodeId);
+            if (node) {
+                node.x += dx;
+                node.y += dy;
+            }
+        });
+        
+        dragStart = { x: e.clientX, y: e.clientY };
+        updateNodes();
+        updateConnections();
+        return;
+    }
+    
+    if (!isSelecting) return;
+    
+    const svg = document.getElementById("svg-tree");
+    const svgRect = svg.getBoundingClientRect();
+    const currentX = e.clientX - svgRect.left;
+    const currentY = e.clientY - svgRect.top;
+    
+    const width = Math.abs(currentX - selectionStart.x);
+    const height = Math.abs(currentY - selectionStart.y);
+    const x = Math.min(currentX, selectionStart.x);
+    const y = Math.min(currentY, selectionStart.y);
+    
+    updateSelectionBox(x, y, width, height);
+    
+    // 实时检测选中的节点
+    const selected = [];
+    nodes.value.forEach(node => {
+        if (node.x >= x && node.x <= x + width &&
+            node.y >= y && node.y <= y + height) {
+            selected.push(node.id);
+        }
+    });
+    selectedNodes.value = selected;
+    highlightSelectedNodes();
+    
+
+};
+
+const handleSelectionEnd = (e) => {
+    if (isDraggingSelection) {
+        isDraggingSelection = false;
+        saveSvg();
+        return;
+    }
+    
+    if (!isSelecting) return;
+    
+    isSelecting = false;
+    // 如果有选中的节点，保留选择框；否则移除
+    if (selectedNodes.value.length > 0) {
+        const svg = document.getElementById("svg-tree");
+        currentSelectionBox = svg ? svg.querySelector("#selection-box") : null;
+        if (currentSelectionBox) {
+            // 改变选择框样式以表示选择完成，使其可拖拽
+            currentSelectionBox.setAttribute("stroke-dasharray", "4,4");
+            currentSelectionBox.setAttribute("fill", "rgba(102, 126, 234, 0.08)");
+            currentSelectionBox.setAttribute("stroke", "rgba(102, 126, 234, 0.6)");
+            currentSelectionBox.style.cursor = "move";
+        }
+        // 设置标记，防止立即触发click事件清除选择
+        justFinishedSelecting = true;
+        setTimeout(() => {
+            justFinishedSelecting = false;
+        }, 100); // 100ms后允许点击清除
+    } else {
+        removeSelectionBox();
+    }
+};
+
+const createSelectionBox = (x, y, width, height) => {
+    const svg = document.getElementById("svg-tree");
+    if (!svg) {
+        console.error('SVG element not found');
+        return;
+    }
+    
+    // 移除已存在的选择框
+    const existingBox = svg.querySelector("#selection-box");
+    if (existingBox) {
+        existingBox.remove();
+    }
+    
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("id", "selection-box");
+    rect.setAttribute("x", x);
+    rect.setAttribute("y", y);
+    rect.setAttribute("width", width);
+    rect.setAttribute("height", height);
+    rect.setAttribute("fill", "rgba(102, 126, 234, 0.15)");
+    rect.setAttribute("stroke", "rgba(102, 126, 234, 0.8)");
+    rect.setAttribute("stroke-width", "2");
+    rect.setAttribute("stroke-dasharray", "8,4");
+    rect.style.filter = "drop-shadow(0 2px 8px rgba(102, 126, 234, 0.3))";
+    svg.appendChild(rect);
+};
+
+const updateSelectionBox = (x, y, width, height) => {
+    const svg = document.getElementById("svg-tree");
+    if (svg) {
+        const selectionBox = svg.querySelector("#selection-box");
+        if (selectionBox) {
+            selectionBox.setAttribute("x", x);
+            selectionBox.setAttribute("y", y);
+            selectionBox.setAttribute("width", width);
+            selectionBox.setAttribute("height", height);
+        } else {
+            createSelectionBox(x, y, width, height);
+        }
+    }
+};
+
+const removeSelectionBox = () => {
+    const svg = document.getElementById("svg-tree");
+    if (svg) {
+        const selectionBox = svg.querySelector("#selection-box");
+        if (selectionBox) {
+            selectionBox.remove();
+        }
+    }
+    currentSelectionBox = null;
+};
+
+const highlightSelectedNodes = () => {
+    // 清除之前的高亮
+    const svg = document.getElementById("svg-tree");
+    if (!svg) return;
+    
+    svg.querySelectorAll('.node-group circle').forEach(circle => {
+        circle.setAttribute("stroke-width", "0");
+    });
+    
+    // 高亮选中的节点
+    selectedNodes.value.forEach(nodeId => {
+        const nodeGroup = svg.querySelector(`g[data-id="${nodeId}"]`);
+        if (nodeGroup) {
+            const circle = nodeGroup.querySelector('circle');
+            circle.setAttribute("stroke", "#667eea");
+            circle.setAttribute("stroke-width", "3");
+        }
+    });
+};
+
+const clearSelection = () => {
+    selectedNodes.value = [];
+    removeSelectionBox();
+    highlightSelectedNodes();
+};
 
 // const deleteNode = () => {
 //     if (!menuNode) return;
@@ -242,11 +453,11 @@ const updateConnections = () => {
 //         child.parentNode = new_parentId;
 //         let conn = cconnections.value.find(c => c.from === menuNode.id && c.to === child.id);
 //         if (!new_parentId) {
-//             console.log('当前删除的是根节点及其连接线')
+//             // console.log('当前删除的是根节点及其连接线')
 //             if (conn) cconnections.value = cconnections.value.filter(c => c !== conn);
 //             return;
 //         }
-//         console.log('要修正的连接线', conn)
+//         // console.log('要修正的连接线', conn)
 //         if (conn) conn.from = new_parentId;
 //     });
 //     nodes.value = nodes.value.filter(n => n.id !== menuNode.id);
@@ -289,10 +500,18 @@ const updateConnections = () => {
 <style scoped>
 
 .main-content{
-    /* background-color: #e74c3c; */
     height:100%;
     display: flex;
     flex-direction: column;
+}
+.roadmap-title {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 1rem 0;
+  margin-top:0;
+  color: #34495e;
+  border-radius: 8px;
 }
 
 .svg-tree-container {
@@ -356,5 +575,29 @@ svg {
 .menu-item.delete:hover {
   background: rgba(231, 76, 60, 0.1);
   color: #e74c3c;
+}
+
+/* 框选相关样式 */
+#svg-tree {
+  user-select: none;
+}
+
+.node-group {
+  cursor: move;
+}
+
+.node-group circle.selected {
+  stroke: #667eea !important;
+  stroke-width: 3 !important;
+  filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+}
+
+#selection-box {
+  transition: all 0.2s ease;
+}
+
+#selection-box:hover {
+  stroke-width: 3;
+  filter: drop-shadow(0 4px 12px rgba(102, 126, 234, 0.4));
 }
 </style>
