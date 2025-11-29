@@ -7,7 +7,7 @@
     <div class="products-grid">
       <div class="product-card">
         <div class="product-icon">🗺️</div>
-        <h3 class="product-title">Mindset Chain</h3>
+        <h3 class="product-title">Roadmap tree</h3>
         <p class="product-description">可视化思维链管理工具，记录每日思考路径与心流状态</p>
         <div class="product-tags">
           <span class="tag">Vue</span>
@@ -25,6 +25,17 @@
             <span class="tag">obsidian插件</span>
         </div>
         <a href="https://github.com/mali-i/deepseek-ai-assistant" target="_blank" rel="noopener noreferrer" class="product-link">查看详情 →</a>
+      </div>
+
+        <div class="product-card">
+        <div class="product-icon">🌲</div>
+        <h3 class="product-title">MindGrove</h3>
+        <p class="product-description">从大模型的交互中从零开始生长出你的知识库</p>
+        <div class="product-tags">
+            <span class="tag">知识管理</span>
+        </div>
+        <div class="product-status">敬请期待</div>
+        <!-- <a href="" target="_blank" rel="noopener noreferrer" class="product-link">查看详情 →</a> -->
       </div>
 
       <div class="product-card coming-soon">
