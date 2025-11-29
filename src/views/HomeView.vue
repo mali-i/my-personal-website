@@ -113,29 +113,29 @@ const contacts = ref([
   min-height: 100vh;
   padding: 1rem;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
 /* 个人介绍区样式 */
 .hero-section {
   text-align: center;
-  padding: 2.5rem 1.5rem;
-  margin-bottom: 2.5rem;
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
   background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
+  border-radius: 16px;
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); */
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .avatar-container {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
@@ -154,10 +154,10 @@ const contacts = ref([
 }
 
 .main-title {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #2c3e50;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -165,34 +165,34 @@ const contacts = ref([
 }
 
 .subtitle {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #7f8c8d;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-weight: 500;
 }
 
 .intro-text {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .intro-text p {
-  margin: 0.3rem 0;
+  margin: 0.2rem 0;
   color: #5a6c7d;
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
 .identity-tags {
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .tag {
-  padding: 0.75rem 1.5rem;
-  border-radius: 25px;
-  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
   font-weight: 600;
   transition: all 0.3s ease;
   cursor: default;
@@ -224,25 +224,25 @@ const contacts = ref([
 
 /* 技能展示区样式 */
 .skills-section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .section-title {
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 600;
   color: #2c3e50;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   position: relative;
 }
 
 .section-title::after {
   content: '';
-  width: 60px;
-  height: 4px;
+  width: 50px;
+  height: 3px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: absolute;
-  bottom: -10px;
+  bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
   border-radius: 2px;
@@ -250,14 +250,14 @@ const contacts = ref([
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
 }
 
 .skill-card {
   background: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  padding: 1rem;
+  border-radius: 12px;
+  padding: 0.8rem 1.2rem;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -265,43 +265,116 @@ const contacts = ref([
 }
 
 .skill-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .skill-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
 }
 
 .skill-name {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #2c3e50;
   margin: 0;
 }
 
 .skill-percentage {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #667eea;
 }
 
 .skill-bar {
   width: 100%;
-  height: 8px;
+  height: 6px;
   background: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
 }
 
 .skill-progress {
   height: 100%;
-  border-radius: 4px;
+  border-radius: 3px;
   transition: width 1.5s ease-out;
   position: relative;
+}
+
+/* 联系方式区样式 */
+.contact-section {
+  text-align: center;
+}
+
+.contact-intro {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.2rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.contact-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+.contact-icon {
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.contact-info {
+  text-align: left;
+  flex: 1;
+}
+
+.contact-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 0.1rem 0;
+}
+
+.contact-description {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin: 0;
 }
 
 .skill-progress::after {
@@ -320,91 +393,18 @@ const contacts = ref([
   100% { transform: translateX(100%); }
 }
 
-/* 联系方式区样式 */
-.contact-section {
-  text-align: center;
-}
-
-.contact-intro {
-  font-size: 1rem;
-  color: #7f8c8d;
-  margin-bottom: 2rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.contact-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.contact-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
-}
-
-.contact-icon {
-  font-size: 1.5rem;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.contact-info {
-  text-align: left;
-  flex: 1;
-}
-
-.contact-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin: 0 0 0.25rem 0;
-}
-
-.contact-description {
-  font-size: 0.9rem;
-  color: #7f8c8d;
-  margin: 0;
-}
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   .home-container {
-    padding: 1rem;
+    padding: 0.5rem;
   }
   
   .hero-section {
-    padding: 3rem 1.5rem;
+    padding: 1.5rem 1rem;
   }
   
   .main-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   
   .identity-tags {

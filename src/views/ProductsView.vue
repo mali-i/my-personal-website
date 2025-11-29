@@ -50,7 +50,7 @@
 
 <style scoped>
 .products-container {
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0;
 }
@@ -82,15 +82,15 @@
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
 }
 
 .product-card {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(102, 126, 234, 0.1);
-  border-radius: 12px;
-  padding: 2rem;
+  border-radius: 10px;
+  padding: 1.2rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -120,37 +120,38 @@
 }
 
 .product-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
 }
 
 .product-title {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #24292f;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .product-description {
   color: #656d76;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  min-height: 3rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  min-height: 2.5rem;
+  font-size: 0.9rem;
 }
 
 .product-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
 }
 
 .tag {
   background: rgba(102, 126, 234, 0.1);
   color: #667eea;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
   font-weight: 500;
 }
 
@@ -161,6 +162,7 @@
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
+  font-size: 0.9rem;
 }
 
 .product-link:hover {
