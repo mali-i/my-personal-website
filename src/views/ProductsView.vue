@@ -7,14 +7,14 @@
     <div class="products-grid">
       <div class="product-card">
         <div class="product-icon">🗺️</div>
-        <h3 class="product-title">Roadmap tree</h3>
-        <p class="product-description">可视化思维链管理工具，记录每日思考路径与心流状态</p>
+        <h3 class="product-title">DoneTrail</h3>
+        <p class="product-description">记录每日完成的事项，生成AI报告和图片日志</p>
         <div class="product-tags">
           <span class="tag">Vue</span>
           <span class="tag">D3.js</span>
           <span class="tag">可视化</span>
         </div>
-        <a href="http://www.priming.cn/" class="product-link" target="_blank">查看详情 →</a>
+        <a href="http://www.donetrail.com" class="product-link" target="_blank">查看详情 →</a>
       </div>
 
     <div class="product-card">
