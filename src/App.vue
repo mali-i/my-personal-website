@@ -87,14 +87,55 @@
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
   .main-content {
     margin-left: 0;
     padding: 16px;
+    width: 100%;
   }
   
   .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    transform: none;
+    border-right: none;
+    border-bottom: 1px solid #d0d7de;
+    padding: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+  }
+
+  .sidebar-title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+  }
+
+  .sidebar-link {
+    width: auto;
+    margin-bottom: 0;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    background: transparent;
+  }
+
+  .sidebar-link.router-link-active {
+    background: #eaecef;
+    color: #0969da;
+    font-weight: 600;
   }
 }
 </style>
