@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import avatarUrl from '../assets/icon-192.jpg'
 
 // 技能数据
 const skills = ref([
@@ -41,10 +42,10 @@ const contacts = ref([
     <section class="hero-section">
       <div class="avatar-container">
         <div class="avatar">
-          <span class="avatar-emoji">👨‍💻</span>
+          <img :src="avatarUrl" alt="Avatar" class="avatar-img" />
         </div>
       </div>
-      <h1 class="main-title">你好！我是阿吉侬</h1>
+      <h1 class="main-title">你好！我是阿吉侬algernon</h1>
       <p class="subtitle">独立开发者 · 创业者</p>
       <div class="intro-text">
         <p>我正在朝着独立开发、创业者的身份标签努力</p>
@@ -143,10 +144,13 @@ const contacts = ref([
   margin: 0 auto;
   box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
   border: 3px solid rgba(255, 255, 255, 0.8);
+  overflow: hidden;
 }
 
-.avatar-emoji {
-  font-size: 2rem;
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .main-title {
