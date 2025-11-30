@@ -27,16 +27,37 @@
         <a href="https://github.com/mali-i/deepseek-ai-assistant" target="_blank" rel="noopener noreferrer" class="product-link">查看详情 →</a>
       </div>
 
-        <div class="product-card">
-        <div class="product-icon">🌲</div>
-        <h3 class="product-title">MindGrove</h3>
-        <p class="product-description">从大模型的交互中从零开始生长出你的知识库</p>
-        <div class="product-tags">
-            <span class="tag">知识管理</span>
-        </div>
-        <div class="product-status">敬请期待</div>
-        <!-- <a href="" target="_blank" rel="noopener noreferrer" class="product-link">查看详情 →</a> -->
+    <div class="product-card">
+      <div class="product-icon">🌲</div>
+      <h3 class="product-title">MindGrove</h3>
+      <p class="product-description">从大模型的交互中从零开始生长出你的知识库</p>
+      <div class="product-tags">
+          <span class="tag">知识管理</span>
       </div>
+      <div class="product-status">敬请期待</div>
+      <!-- <a href="" target="_blank" rel="noopener noreferrer" class="product-link">查看详情 →</a> -->
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">💼</div>
+      <h3 class="product-title">AI紫薇职引</h3>
+      <p class="product-description">AI+紫薇斗术，刻画您的职业画像</p>
+      <div class="product-tags">
+          <span class="tag">职业规划</span>
+      </div>
+      <div class="product-status">敬请期待</div>
+      <!-- <a href="" target="_blank" rel="noopener noreferrer" class="product-link">查看详情 →</a> -->
+    </div>
+        <div class="product-card">
+      <div class="product-icon">🏠</div>
+      <h3 class="product-title">AI软装</h3>
+      <p class="product-description">室内软装解决方案</p>
+      <div class="product-tags">
+          <span class="tag">软装</span>
+      </div>
+      <div class="product-status">敬请期待</div>
+      <!-- <a href="" target="_blank" rel="noopener noreferrer" class="product-link">查看详情 →</a> -->
+    </div>
 
       <div class="product-card coming-soon">
         <div class="product-icon">💡</div>
