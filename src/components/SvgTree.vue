@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue';
+import { onMounted, ref, computed, watch, nextTick } from 'vue';
 import { useSvgsStore } from '../stores/svgs';
 
 var store = useSvgsStore();
@@ -13,6 +13,21 @@ var cconnections = ref([]);
 const menuStyle = ref({});
 const menuVisible = ref(false);
 let menuNode = null; // 右键菜单当前操作的节点
+
+// 监听 store.svgs 的变化，处理异步数据加载
+watch(() => store.svgs, (newSvgs) => {
+    const date = selectedDate.value;
+    // 如果当前显示为空，且 store 中有数据，则更新显示
+    if (nodes.value.length === 0 && newSvgs[date]?.nodes?.length > 0) {
+        nodes.value = newSvgs[date].nodes || [];
+        cconnections.value = newSvgs[date].connections || [];
+        nextTick(() => {
+            updateNodes();
+            updateConnections();
+            setTimeout(fitContent, 100);
+        });
+    }
+}, { deep: true });
 
 // 缩放和平移状态
 const transform = ref({ x: 0, y: 0, k: 1 });
@@ -169,9 +184,9 @@ watch(() => store.selectedDate, (newDate, oldDate) => {
 });
 
 onMounted(() => {
-    const today = new Date().toISOString().split('T')[0];
-    nodes.value = store.svgs[today]?.nodes || [];
-    cconnections.value = store.svgs[today]?.connections || [];
+    const date = selectedDate.value;
+    nodes.value = store.svgs[date]?.nodes || [];
+    cconnections.value = store.svgs[date]?.connections || [];
     
     const svg = document.getElementById("svg-tree");
     
