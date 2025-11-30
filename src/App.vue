@@ -6,7 +6,7 @@
     <nav class="sidebar">
       <h2 class="sidebar-title">algernon's</h2>
       <router-link to="/" class="sidebar-link">Home</router-link>
-      <router-link to="/mindset-chain" class="sidebar-link">Mindset Chain</router-link>
+      <router-link to="/mindset-chain" class="sidebar-link">Mindset Trail</router-link>
       <router-link to="/writing" class="sidebar-link">Writing</router-link>
       <router-link to="/products" class="sidebar-link">Products</router-link>
     </nav>

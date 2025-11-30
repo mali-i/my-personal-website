@@ -10,7 +10,7 @@ const selectedDate = computed(() => store.selectedDate)
 
 <template>
  <div class="mindset-chain-container">
-  <div class="roadmap-title">My {{ selectedDate }} 's Mindset Chain</div>
+  <div class="roadmap-title">My {{ selectedDate }} 's Mindset Trail</div>
   <HeatMap />
   <SvgTree />
  </div>
