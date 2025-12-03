@@ -1,7 +1,7 @@
 import {createRouter, createMemoryHistory, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import WritingView from '../views/WritingView.vue'
-import MindsetChainView from '../views/MindsetChainView.vue'
+import AlgernonAgentView from '../views/AlgernonAgentView.vue'
 import SelfIntroductionView from '../views/SelfIntroductionView.vue';
 import PhaseReviewView from '../views/PhaseReviewView.vue';
 
@@ -24,7 +24,7 @@ const routes = [
             }
         ]
     },
-    { path: '/mindset-chain', component: MindsetChainView, meta: { title: '思维链 - 阿吉侬' } },
+    { path: '/algernon-agent', component: AlgernonAgentView, meta: { title: 'Algernon Agent - 阿吉侬' } },
     { path: '/products', component: () => import('../views/ProductsView.vue'), meta: { title: '产品 - 阿吉侬' } }
 ]
 // 创建路由实例，并传递 `routes` 配置
