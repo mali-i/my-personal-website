@@ -12,6 +12,14 @@ const skills = ref([
   { name: '项目管理', level: 80, color: '#4ECDC4' }
 ])
 
+// 兴趣爱好数据
+const interests = ref([
+  { icon: '💻', name: '编程开发', description: '全栈开发，热衷于构建优雅的解决方案' },
+  { icon: '📚', name: '阅读写作', description: '通过文字记录思考和成长' },
+  { icon: '🎯', name: '产品设计', description: '关注用户体验，追求简洁与实用' },
+  { icon: '🚀', name: '创业探索', description: '一人公司，追求自由与创造' },
+])
+
 // 联系方式数据
 const contacts = ref([
   { 
@@ -80,6 +88,22 @@ const contacts = ref([
               }"
             ></div>
           </div>
+        </div>
+      </div>
+    </section>
+
+        <!-- 兴趣爱好 -->
+    <section class="interests-section">
+      <h2 class="section-title">兴趣爱好</h2>
+      <div class="interests-grid">
+        <div 
+          v-for="(interest, index) in interests" 
+          :key="index" 
+          class="interest-card"
+        >
+          <div class="interest-icon">{{ interest.icon }}</div>
+          <h3 class="interest-name">{{ interest.name }}</h3>
+          <p class="interest-description">{{ interest.description }}</p>
         </div>
       </div>
     </section>
@@ -302,6 +326,52 @@ const contacts = ref([
   border-radius: 3px;
   transition: width 1.5s ease-out;
   position: relative;
+}
+
+
+/* 兴趣爱好 */
+.interests-section {
+  margin-bottom: 2rem;
+}
+
+.interests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.interest-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 1.2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.interest-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.interest-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.interest-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+}
+
+.interest-description {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.5;
 }
 
 /* 联系方式区样式 */

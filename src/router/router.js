@@ -2,10 +2,28 @@ import {createRouter, createMemoryHistory, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import WritingView from '../views/WritingView.vue'
 import MindsetChainView from '../views/MindsetChainView.vue'
+import SelfIntroductionView from '../views/SelfIntroductionView.vue';
+import PhaseReviewView from '../views/PhaseReviewView.vue';
 
 const routes = [
     { path: '/', component: HomeView, meta: { title: '首页 - 阿吉侬' } },
-    { path: '/writing', component: WritingView, meta: { title: '写作 - 阿吉侬' } },
+    {
+        path: '/writing',
+        component: WritingView,
+        meta: { title: '写作 - 阿吉侬' },
+        children: [
+            {
+                path: 'self-introduction',
+                component: SelfIntroductionView,
+                meta: { title: '自我介绍 - 阿吉侬' }
+            },
+            {
+                path: 'phase-review',
+                component: PhaseReviewView,
+                meta: { title: '阶段复盘 - 阿吉侬' }
+            }
+        ]
+    },
     { path: '/mindset-chain', component: MindsetChainView, meta: { title: '思维链 - 阿吉侬' } },
     { path: '/products', component: () => import('../views/ProductsView.vue'), meta: { title: '产品 - 阿吉侬' } }
 ]
