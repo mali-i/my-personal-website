@@ -14,20 +14,29 @@ const menuStyle = ref({});
 const menuVisible = ref(false);
 let menuNode = null; // 右键菜单当前操作的节点
 
-// 监听 store.svgs 的变化，处理异步数据加载
-watch(() => store.svgs, (newSvgs) => {
-    const date = selectedDate.value;
-    // 如果当前显示为空，且 store 中有数据，则更新显示
-    if (nodes.value.length === 0 && newSvgs[date]?.nodes?.length > 0) {
-        nodes.value = newSvgs[date].nodes || [];
-        cconnections.value = newSvgs[date].connections || [];
-        nextTick(() => {
-            updateNodes();
-            updateConnections();
-            setTimeout(fitContent, 100);
-        });
+// 监听 store.isLoaded 的变化，处理异步数据加载
+watch(() => store.isLoaded, (loaded) => {
+    if (loaded) {
+        const dates = Object.keys(store.svgs);
+        if (dates.length > 0) {
+            const latestDate = dates.sort((a, b) => new Date(b) - new Date(a))[0];
+            // 即使日期一样，也要确保数据被加载（因为之前可能因为没数据而为空）
+            if (store.selectedDate !== latestDate) {
+                store.selectedDate = latestDate;
+            } else {
+                // 如果日期没变，手动触发数据更新
+                const date = store.selectedDate;
+                nodes.value = store.svgs[date]?.nodes || [];
+                cconnections.value = store.svgs[date]?.connections || [];
+                nextTick(() => {
+                    updateNodes();
+                    updateConnections();
+                    setTimeout(fitContent, 100);
+                });
+            }
+        }
     }
-}, { deep: true });
+}, { immediate: true });
 
 // 缩放和平移状态
 const transform = ref({ x: 0, y: 0, k: 1 });
@@ -184,6 +193,14 @@ watch(() => store.selectedDate, (newDate, oldDate) => {
 });
 
 onMounted(() => {
+    // 获取最新日期的数据
+    const dates = Object.keys(store.svgs);
+    if (dates.length > 0) {
+        // 按日期降序排序，获取最新日期
+        const latestDate = dates.sort((a, b) => new Date(b) - new Date(a))[0];
+        store.selectedDate = latestDate;
+    }
+    
     const date = selectedDate.value;
     nodes.value = store.svgs[date]?.nodes || [];
     cconnections.value = store.svgs[date]?.connections || [];

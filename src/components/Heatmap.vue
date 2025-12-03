@@ -8,7 +8,7 @@ const svg_left_or_right_margin = ref(10)
 const pixel_margin = ref(5) // rect与右边的rect之间的间隔
 var rect_count_x = ref(0)
 const store = useSvgsStore() // 在组件内部的任何地方都可以访问变量store了
-
+const svgRef = ref(null)
 
 const observer = new ResizeObserver(entries =>{
     for(let entry of entries){
@@ -23,18 +23,22 @@ const observer = new ResizeObserver(entries =>{
 // 监听rect_count_x的变化
 watch(rect_count_x,(newValue, oldValue)=>{
     // console.log(`一行里面的rect的个数是${newValue}`)
-    d3.select('#svg_container').selectAll('rect').remove()
+    if (!svgRef.value) return
+    d3.select(svgRef.value).selectAll('rect').remove()
     draw_svg() // 根据这个rect_count_x，重新绘制svg
 })
 
 onMounted(()=>{
     // console.log(jsonData)
-    observer.observe(document.getElementById('svg_container'))
+    if (svgRef.value) {
+        observer.observe(svgRef.value)
+    }
     draw_svg();
 })
 
 const draw_svg = async ()=>{
     await nextTick()
+    if (!svgRef.value) return
     // 日期方块的个数应该是： rect_count_x * 7
     // svg中的日期方块的渲染布局应该是先纵向布局，再横向布局。纵向布局7个日期方块，再横向布局
     // 要从jsonData中读取对应个数的日期方, 从当前日期往前推 rect_count_x * 7 个日期方块
@@ -57,7 +61,7 @@ const draw_svg = async ()=>{
     // console.log(date_list)
 
     
-    d3.select('#svg_container').selectAll('rect').data(date_list)
+    d3.select(svgRef.value).selectAll('rect').data(date_list)
      .enter().append('rect')
       .attr('width', pixel_width.value)
       .attr('height', pixel_width.value)
@@ -96,8 +100,16 @@ const handleClick = (e,v)=>{
     store.selectedDate = v.date // 把当前选中的日期存到store中
 }
 
+watch(() => store.isLoaded, (loaded) => {
+    if (loaded && svgRef.value) {
+        d3.select(svgRef.value).selectAll('rect').remove();
+        draw_svg();
+    }
+}, { immediate: true });
+
 watch(store.svgs,()=>{
-     d3.select('#svg_container').selectAll('rect').remove();
+    if (!svgRef.value) return
+     d3.select(svgRef.value).selectAll('rect').remove();
     draw_svg();
 }, {deep:true}) // 深度监听store.svgs的变化
 
@@ -106,7 +118,7 @@ watch(store.svgs,()=>{
 
 <template>
     <div id="container">
-        <svg id="svg_container"></svg>
+        <svg ref="svgRef"></svg>
     </div> 
 </template>
 
