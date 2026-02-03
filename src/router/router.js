@@ -1,13 +1,12 @@
 import {createRouter, createMemoryHistory, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AlgernonAgentView from '../views/AlgernonAgentView.vue'
 import SelfIntroductionView from '../views/SelfIntroductionView.vue';
 import PhaseReviewView from '../views/PhaseReviewView.vue';
 
 const routes = [
     { path: '/', component: HomeView, meta: { title: '首页 - 阿吉侬' } },
     // writing 路由已删除
-    { path: '/algernon-agent', component: AlgernonAgentView, meta: { title: 'Algernon Agent - 阿吉侬' } },
+    // algernon-agent 路由已删除
     { path: '/products', component: () => import('../views/ProductsView.vue'), meta: { title: '产品 - 阿吉侬' } }
 ]
 // 创建路由实例，并传递 `routes` 配置

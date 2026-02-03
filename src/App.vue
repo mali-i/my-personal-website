@@ -13,7 +13,6 @@ const toggleWriting = () => {
       <h2 class="sidebar-title">algernon's</h2>
       <div class="nav-content">
         <router-link to="/" class="sidebar-link">Home</router-link>
-        <router-link to="/algernon-agent" class="sidebar-link">Algernon Agent</router-link>
         
         <!-- Writing 菜单已删除 -->
 
