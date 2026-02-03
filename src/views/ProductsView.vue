@@ -5,17 +5,6 @@
   <div class="products-container">
 
     <div class="products-grid">
-      <div class="product-card">
-        <div class="product-icon">🗺️</div>
-        <h3 class="product-title">DoneTrail</h3>
-        <p class="product-description">记录每日完成的事项，生成AI报告和图片日志</p>
-        <div class="product-tags">
-          <span class="tag">Vue</span>
-          <span class="tag">D3.js</span>
-          <span class="tag">可视化</span>
-        </div>
-        <a href="http://www.donetrail.com" class="product-link" target="_blank">查看详情 →</a>
-      </div>
 
     <div class="product-card">
         <div class="product-icon">🤖</div>
@@ -37,6 +26,17 @@
         <a href="http://mirrospeak.com.cn/" target="_blank" rel="noopener noreferrer" class="product-link">查看详情 →</a>
     </div>
 
+    <div class="product-card">
+        <div class="product-icon">🗺️</div>
+        <h3 class="product-title">DoneTrail</h3>
+        <p class="product-description">记录每日完成的事项，生成AI报告和图片日志</p>
+        <div class="product-tags">
+          <span class="tag">Vue</span>
+          <span class="tag">D3.js</span>
+          <span class="tag">可视化</span>
+        </div>
+        <!-- <a href="http://www.donetrail.com" class="product-link" target="_blank">查看详情 →</a> -->
+      </div>
 
       <div class="product-card coming-soon">
         <div class="product-icon">💡</div>
