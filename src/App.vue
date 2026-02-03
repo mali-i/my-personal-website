@@ -15,16 +15,7 @@ const toggleWriting = () => {
         <router-link to="/" class="sidebar-link">Home</router-link>
         <router-link to="/algernon-agent" class="sidebar-link">Algernon Agent</router-link>
         
-        <div class="nav-group">
-          <div class="sidebar-link group-toggle" @click="toggleWriting" :class="{ active: writingExpanded }">
-            <span>Writing</span>
-            <span class="arrow" :class="{ expanded: writingExpanded }">▶</span>
-          </div>
-          <div class="nested-links" :class="{ show: writingExpanded }">
-            <router-link to="/writing/self-introduction" class="sidebar-link nested">Self Introduction</router-link>
-            <router-link to="/writing/phase-review" class="sidebar-link nested">Phase Review</router-link>
-          </div>
-        </div>
+        <!-- Writing 菜单已删除 -->
 
         <router-link to="/products" class="sidebar-link">Products</router-link>
       </div>

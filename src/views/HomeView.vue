@@ -5,12 +5,10 @@ import avatarUrl from '../assets/icon-192.jpg'
 // 技能数据
 const skills = ref([
   { name: 'Vue.js', level: 90, color: '#4FC08D' },
-  { name: 'JavaScript', level: 85, color: '#F7DF1E' },
   { name: 'Node.js', level: 80, color: '#339933' },
-  { name: 'Python', level: 51, color: '#3776AB' },
-  { name: '产品设计', level: 40, color: '#FF6B6B' },
-  { name: '项目管理', level: 80, color: '#4ECDC4' }
+  { name: 'VibeCoding', level: 80,color: '#FF3E00'}
 ])
+  
 
 // 兴趣爱好数据
 const interests = ref([
@@ -31,17 +29,61 @@ const contacts = ref([
   { 
     name: '邮箱', 
     icon: '📧', 
-    // url: '',
+    url: 'hello_mali_i@163.com',
     description: '商务合作联系'
   },
-  { 
-    name: '微信', 
-    icon: '💬', 
-    // url: '',
-    description: '扫码添加微信'
+  {
+    name:'小红书',
+    icon:'📖',
+    url:'https://xhslink.com/m/3DQIDBqclfQ',
+    description:'关注我的小红书'
+  },
+  {
+    name:'微信公众号',
+    icon:'📰',
+    //  url:'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI5MjE3MDE2MQ==&scene=124#wechat_redirect',
+    description:'关注我的公众号：algernon的自由之路'
   }
 
 ])
+
+// 提示框状态
+const tooltip = ref({
+  show: false,
+  text: '',
+  x: 0,
+  y: 0
+})
+
+// 处理邮箱点击
+const handleContactClick = (e, contact) => {
+  if (contact.name === '邮箱') {
+    e.preventDefault()
+    
+    const rect = e.currentTarget.getBoundingClientRect()
+    tooltip.value.x = rect.left + rect.width / 2
+    tooltip.value.y = rect.top
+    tooltip.value.text = `📧 ${contact.url}`
+    tooltip.value.show = true
+
+    // 尝试复制到剪贴板
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(contact.url).then(() => {
+        tooltip.value.text = `✅ 已复制: ${contact.url}`
+      }).catch(err => {
+        console.error('复制失败:', err)
+      })
+    } else {
+      // 兼容性处理：如果不支持 clipboard API，至少显示了邮箱
+      console.warn('浏览器不支持 clipboard API')
+    }
+    
+    // 2秒后隐藏提示
+    setTimeout(() => {
+      tooltip.value.show = false
+    }, 2000)
+  }
+}
 </script>
 
 <template>
@@ -63,6 +105,22 @@ const contacts = ref([
         <span class="tag primary">🚀 独立开发</span>
         <span class="tag secondary">💼 创业者</span>
         <span class="tag accent">🎯 一人公司</span>
+      </div>
+
+      <!-- Hero 社交链接 -->
+      <div class="hero-social-links">
+        <a 
+          v-for="contact in contacts" 
+          :key="contact.name"
+          :href="contact.url || '#'" 
+          class="social-icon-link"
+          :title="contact.name"
+          target="_blank"
+          rel="noopener noreferrer"
+          @click="handleContactClick($event, contact)"
+        >
+          <span class="icon">{{ contact.icon }}</span>
+        </a>
       </div>
     </section>
 
@@ -120,6 +178,7 @@ const contacts = ref([
           class="contact-card"
           target="_blank"
           rel="noopener noreferrer"
+          @click="handleContactClick($event, contact)"
         >
           <div class="contact-icon">{{ contact.icon }}</div>
           <div class="contact-info">
@@ -129,6 +188,19 @@ const contacts = ref([
         </a>
       </div>
     </section>
+
+    <!-- 邮箱提示框 -->
+    <div 
+      v-if="tooltip.show" 
+      class="email-tooltip"
+      :style="{ 
+        left: tooltip.x + 'px', 
+        top: (tooltip.y - 50) + 'px'
+      }"
+    >
+      {{ tooltip.text }}
+      <div class="tooltip-arrow"></div>
+    </div>
   </div>
 </template>
 
@@ -244,6 +316,45 @@ const contacts = ref([
 .tag:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Hero 社交链接样式 */
+.hero-social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.social-icon-link {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 50%;
+  font-size: 1.4rem;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.social-icon-link:hover {
+  transform: scale(1.15) translateY(-5px);
+  background: white;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+  border-color: #667eea;
+}
+
+.social-icon-link .icon {
+  filter: grayscale(0.2);
+  transition: filter 0.3s ease;
+}
+
+.social-icon-link:hover .icon {
+  filter: grayscale(0);
 }
 
 /* 技能展示区样式 */
@@ -445,6 +556,47 @@ const contacts = ref([
   font-size: 0.8rem;
   color: #7f8c8d;
   margin: 0;
+}
+
+/* 邮箱提示框 */
+.email-tooltip {
+  position: fixed;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 1000;
+  transform: translateX(-50%);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+  animation: tooltipSlideIn 0.3s ease-out;
+  pointer-events: none;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid;
+  border-top-color: #764ba2;
+}
+
+@keyframes tooltipSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .skill-progress::after {
