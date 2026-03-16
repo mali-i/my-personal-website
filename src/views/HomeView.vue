@@ -5,7 +5,6 @@ import avatarUrl from '../assets/icon-192.jpg'
 // 技能数据
 const skills = ref([
   { name: 'Vue.js', level: 90, color: '#4FC08D' },
-  { name: 'Node.js', level: 80, color: '#339933' },
   { name: 'VibeCoding', level: 80,color: '#FF3E00'}
 ])
   
