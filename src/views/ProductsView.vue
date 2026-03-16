@@ -27,15 +27,15 @@
     </div>
 
     <div class="product-card">
-        <div class="product-icon">🗺️</div>
-        <h3 class="product-title">DoneTrail</h3>
+        <div class="product-icon"><img src="/goalfeed_favicon.png" /></div>
+        <h3 class="product-title">GoalFeed</h3>
         <p class="product-description">记录每日完成的事项，生成AI报告和图片日志</p>
         <div class="product-tags">
           <span class="tag">Vue</span>
-          <span class="tag">D3.js</span>
-          <span class="tag">可视化</span>
+          <span class="tag">Supabase</span>
+          <span class="tag">目标反馈</span>
         </div>
-        <!-- <a href="http://www.donetrail.com" class="product-link" target="_blank">查看详情 →</a> -->
+        <a href="http://www.goalfeed.com.cn" class="product-link" target="_blank">查看详情 →</a>
       </div>
 
       <div class="product-card coming-soon">
@@ -120,8 +120,19 @@
 }
 
 .product-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 2rem;
   margin-bottom: 0.8rem;
+}
+
+.product-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .product-title {
