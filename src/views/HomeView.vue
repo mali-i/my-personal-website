@@ -106,22 +106,6 @@ const handleContactClick = (e, contact) => {
         <span class="tag secondary">💼 创业者</span>
         <span class="tag accent">🎯 一人公司</span>
       </div>
-
-      <!-- Hero 社交链接 -->
-      <div class="hero-social-links">
-        <a 
-          v-for="contact in contacts" 
-          :key="contact.name"
-          :href="contact.url || '#'" 
-          class="social-icon-link"
-          :title="contact.name"
-          target="_blank"
-          rel="noopener noreferrer"
-          @click="handleContactClick($event, contact)"
-        >
-          <span class="icon">{{ contact.icon }}</span>
-        </a>
-      </div>
     </section>
 
     <!-- 技能展示区 -->
