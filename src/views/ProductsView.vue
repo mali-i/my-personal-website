@@ -47,6 +47,7 @@
           <span class="tag">效率工具</span>
           <span class="tag">SwiftUI</span>
         </div>
+        <router-link to="/rollingplan" class="product-link">查看详情 →</router-link>
       </div>
 
       <div class="product-card coming-soon">

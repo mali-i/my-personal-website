@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 const writingExpanded = ref(false);
 const toggleWriting = () => {
@@ -8,7 +11,8 @@ const toggleWriting = () => {
 </script>
 
 <template>
-  <div class="layout">
+  <router-view v-if="route.meta.standalone"></router-view>
+  <div v-else class="layout">
     <nav class="sidebar">
       <h2 class="sidebar-title">algernon's</h2>
       <div class="nav-content">
