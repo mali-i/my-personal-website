@@ -17,7 +17,7 @@
     </div>
 
     <div class="product-card">
-        <div class="product-icon">🎙️</div>
+        <div class="product-icon"><img src="/mirrospeak_icon.png" alt="MirroSpeak icon" /></div>
         <h3 class="product-title">MirroSpeak</h3>
         <p class="product-description">即兴演讲工具、本地视频管理工具</p>
         <div class="product-tags">
@@ -36,6 +36,17 @@
           <span class="tag">目标反馈</span>
         </div>
         <a href="http://www.goalfeed.com.cn" class="product-link" target="_blank">查看详情 →</a>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon"><img src="/rollingplan-icon.png" alt="RollingPlan icon" /></div>
+        <h3 class="product-title">RollingPlan</h3>
+        <p class="product-description">管理长期目标并持续推进目标。</p>
+        <div class="product-tags">
+          <span class="tag">计划管理</span>
+          <span class="tag">效率工具</span>
+          <span class="tag">SwiftUI</span>
+        </div>
       </div>
 
       <div class="product-card coming-soon">
@@ -133,6 +144,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  border-radius: 8px;
 }
 
 .product-title {
