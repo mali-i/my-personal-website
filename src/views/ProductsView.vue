@@ -47,7 +47,7 @@
           <span class="tag">效率工具</span>
           <span class="tag">SwiftUI</span>
         </div>
-        <router-link to="/rollingplan" class="product-link">查看详情 →</router-link>
+        <a href="https://goalfeed.com.cn/rollingplan" target="_blank" rel="noopener noreferrer" class="product-link">查看详情 →</a>
       </div>
 
       <div class="product-card coming-soon">
